@@ -1,0 +1,284 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ──────────────────────────────────────────────────────────────
+   Poca Pizzeria — Brand System, Edition 01
+   Forno Yellow · Sugo Red · Carbone · Semola · Ember · Cenere
+   Proportion target ≈ 60 Semola / 22 Yellow / 12 Red / 6 Carbone
+   ────────────────────────────────────────────────────────────── */
+
+@theme inline {
+  /* One typeface across the whole site. font-display and font-mono are kept
+     as roles so component classes still read as intent, not as families. */
+  --font-display: var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+
+  --color-forno: var(--forno);
+  --color-sugo: var(--sugo);
+  --color-carbone: var(--carbone);
+  --color-semola: var(--semola);
+  --color-ember: var(--ember);
+  --color-cenere: var(--cenere);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  /* Brand constants — these never change between themes. */
+  --forno: #e9b01c;
+  --sugo: #a81f1c;
+  --carbone: #17130f;
+  --semola: #f7f1e3;
+  --ember: #d2601a;
+  --cenere: #7a6e5f;
+
+  /* Roles — light */
+  --background: var(--semola);
+  --foreground: var(--carbone);
+  --card: #fbf7ec;
+  --card-foreground: var(--carbone);
+  --popover: #fbf7ec;
+  --popover-foreground: var(--carbone);
+  --primary: var(--sugo);
+  --primary-foreground: #fdf8ec;
+  --secondary: #ebe3d1;
+  --secondary-foreground: var(--carbone);
+  --muted: #ebe3d1;
+  --muted-foreground: var(--cenere);
+  --accent: var(--forno);
+  --accent-foreground: #7d1a0f;
+  --destructive: #a81f1c;
+  --border: #ddd2ba;
+  --input: #ddd2ba;
+  --ring: var(--ember);
+
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: #141110;
+  --foreground: #f3ebdb;
+  --card: #1b1715;
+  --card-foreground: #f3ebdb;
+  --popover: #1b1715;
+  --popover-foreground: #f3ebdb;
+  --primary: #e5513f;
+  --primary-foreground: #1a0d0a;
+  --secondary: #241f1b;
+  --secondary-foreground: #f3ebdb;
+  --muted: #241f1b;
+  --muted-foreground: #a4967f;
+  --accent: #f0be2e;
+  --accent-foreground: #2b1006;
+  --destructive: #e5513f;
+  --border: #362f28;
+  --input: #362f28;
+  --ring: #f3722c;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-medium;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-bold;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Tailwind v4's reset gives buttons cursor: default. Every control in this
+     app is clickable, so put the pointer back. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  /* The masthead rule that runs under every section heading on the
+     printed menu. Used by SectionHeading. */
+  .rule-sugo {
+    @apply border-b-2 border-[var(--sugo)] pb-2;
+  }
+  /* Every interactive surface eases the same way. Components only need to
+     say what changes; the timing lives here. */
+  a,
+  button,
+  [role="button"],
+  .transitions {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  /* A plus and a cross both have four-fold symmetry, so a quarter turn lands
+     back on the same glyph — the motion reads as a clean spin with no odd
+     halfway state. Half a turn travels twice as far for the same result. */
+  .spin-on-hover {
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .group:hover .spin-on-hover,
+  button:hover > .spin-on-hover {
+    transform: rotate(90deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a,
+    button,
+    [role="button"],
+    .transitions,
+    .spin-on-hover {
+      transition-duration: 0.01ms;
+    }
+    .group:hover .spin-on-hover,
+    button:hover > .spin-on-hover {
+      transform: none;
+    }
+  }
+
+  /* Only the fire moves. Three layers on three different clocks, with
+     uneven keyframe stops so no single beat dominates — a flame that leans,
+     a core that lags behind it, and embers pulsing slower than both. The
+     transform origin sits at the base of the flame, where it meets the logs,
+     so nothing ever looks like it is being scaled from its middle. */
+  .poca-flame-body,
+  .poca-flame-core,
+  .poca-glow {
+    transform-origin: 233px 187px;
+    will-change: transform, opacity;
+  }
+
+  .poca-flame-body {
+    animation: poca-body 3.7s ease-in-out infinite;
+  }
+  .poca-flame-core {
+    animation: poca-core 2.3s ease-in-out infinite;
+  }
+  .poca-glow {
+    animation: poca-embers 5.1s ease-in-out infinite;
+  }
+
+  @keyframes poca-body {
+    0% {
+      transform: scaleY(1) scaleX(1) rotate(0deg);
+      opacity: 1;
+    }
+    13% {
+      transform: scaleY(1.06) scaleX(0.97) rotate(-1.4deg);
+      opacity: 0.94;
+    }
+    29% {
+      transform: scaleY(0.98) scaleX(1.02) rotate(1.1deg);
+      opacity: 1;
+    }
+    47% {
+      transform: scaleY(1.09) scaleX(0.95) rotate(-0.6deg);
+      opacity: 0.9;
+    }
+    61% {
+      transform: scaleY(1.01) scaleX(1.01) rotate(1.6deg);
+      opacity: 1;
+    }
+    83% {
+      transform: scaleY(1.04) scaleX(0.98) rotate(-1deg);
+      opacity: 0.96;
+    }
+    100% {
+      transform: scaleY(1) scaleX(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  /* The core lags and swings a little wider — that offset between the two is
+     most of what sells it. */
+  @keyframes poca-core {
+    0% {
+      transform: scaleY(1) rotate(0deg);
+      opacity: 0.92;
+    }
+    19% {
+      transform: scaleY(0.92) rotate(2.2deg);
+      opacity: 1;
+    }
+    41% {
+      transform: scaleY(1.12) rotate(-1.8deg);
+      opacity: 0.85;
+    }
+    67% {
+      transform: scaleY(0.96) rotate(1.2deg);
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(1) rotate(0deg);
+      opacity: 0.92;
+    }
+  }
+
+  @keyframes poca-embers {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    37% {
+      transform: scale(1.06);
+      opacity: 1;
+    }
+    72% {
+      transform: scale(0.96);
+      opacity: 0.88;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .poca-flame-body,
+    .poca-flame-core,
+    .poca-glow {
+      animation: none;
+    }
+  }
+
+  /* Prices, hours and quantities always line up in columns. */
+  .numeric {
+    font-variant-numeric: tabular-nums;
+  }
+}

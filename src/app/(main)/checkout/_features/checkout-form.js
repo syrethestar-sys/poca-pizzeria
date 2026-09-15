@@ -90,6 +90,10 @@ export function CheckoutForm() {
         })),
       });
       clear();
+      if (data.order?.payment?.checkoutUrl) {
+        window.location.href = data.order.payment.checkoutUrl;
+        return;
+      }
       setPlaced(data.order);
     } catch (err) {
       setServerError(err.response?.data?.message ?? "Could not place the order. Try again.");

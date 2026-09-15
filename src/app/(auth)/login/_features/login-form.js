@@ -29,7 +29,7 @@ export function LoginForm() {
     setServerError("");
     try {
       const { data } = await server.post("/auth/login", values);
-      login(data.user);
+      login(data.user, data.token);
     } catch (err) {
       setServerError(err.response?.data?.message ?? "Could not log in. Try again.");
     }
@@ -53,7 +53,15 @@ export function LoginForm() {
         </div>
 
         <div>
-          <Label htmlFor="login-password">{t("auth.password")}</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="login-password">{t("auth.password")}</Label>
+            <Link
+              href="/forgot-password"
+              className="text-xs text-sugo underline-offset-4 hover:underline"
+            >
+              {t("auth.forgotPassword")}
+            </Link>
+          </div>
           <Input
             id="login-password"
             type="password"

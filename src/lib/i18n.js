@@ -17,6 +17,8 @@ export const DICTIONARY = {
   "action.login": { en: "Log in", mn: "Нэвтрэх" },
   "action.signup": { en: "Sign up", mn: "Бүртгүүлэх" },
   "action.logout": { en: "Log out", mn: "Гарах" },
+  "action.sendResetLink": { en: "Send reset link", mn: "Холбоос илгээх" },
+  "action.resetPassword": { en: "Update password", mn: "Нууц үг шинэчлэх" },
   "action.call": { en: "Call", mn: "Залгах" },
   "action.seeMenu": { en: "See the menu", mn: "Цэс үзэх" },
   "action.add": { en: "Add to order", mn: "Захиалгад нэмэх" },
@@ -130,6 +132,27 @@ export const DICTIONARY = {
   "auth.confirm": { en: "Confirm password", mn: "Нууц үг давтах" },
   "auth.haveAccount": { en: "Already have an account?", mn: "Бүртгэлтэй юу?" },
   "auth.noAccount": { en: "No account yet?", mn: "Бүртгэл байхгүй юу?" },
+  "auth.forgotPassword": { en: "Forgot password?", mn: "Нууц үгээ мартсан уу?" },
+  "auth.forgotPasswordTitle": { en: "Reset your password", mn: "Нууц үг сэргээх" },
+  "auth.forgotPasswordLede": {
+    en: "Enter your email and we'll send you a reset link.",
+    mn: "И-мэйл хаягаа оруулбал сэргээх холбоос илгээнэ.",
+  },
+  "auth.resetEmailSent": {
+    en: "If that email is registered, a reset link is on its way.",
+    mn: "Хэрэв энэ и-мэйл бүртгэлтэй бол сэргээх холбоос очиж байна.",
+  },
+  "auth.resetPasswordTitle": { en: "Choose a new password", mn: "Шинэ нууц үг сонгох" },
+  "auth.newPassword": { en: "New password", mn: "Шинэ нууц үг" },
+  "auth.backToLogin": { en: "Back to log in", mn: "Нэвтрэх хуудас руу буцах" },
+  "auth.resetSuccess": {
+    en: "Password updated. You can log in now.",
+    mn: "Нууц үг шинэчлэгдлээ. Одоо нэвтэрч болно.",
+  },
+  "auth.invalidResetLink": {
+    en: "This reset link is invalid or missing. Request a new one.",
+    mn: "Энэ холбоос хүчингүй байна. Дахин хүсэлт илгээнэ үү.",
+  },
 
   "visit.title": {
     en: "Behind the Square, 20 metres west of Flora.",

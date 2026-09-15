@@ -20,15 +20,17 @@ export function AuthProvider({ children }) {
     setReady(true);
   }, []);
 
-  const login = (userData) => {
+  const login = (userData, token) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
+    if (token) localStorage.setItem("token", token);
     router.push(userData.role === "admin" ? "/admin/menu" : "/");
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     router.push("/login");
   };
 

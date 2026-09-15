@@ -36,7 +36,7 @@ export function SignupForm() {
         email: values.email,
         password: values.password,
       });
-      login(data.user);
+      login(data.user, data.token);
     } catch (err) {
       setServerError(err.response?.data?.message ?? "Could not create the account. Try again.");
     }

@@ -9,6 +9,12 @@ import { cn } from "@/lib/utils";
 
 const STATUSES = ["pending", "preparing", "ready", "on-the-way", "delivered", "cancelled"];
 
+const PAYMENT_TONE = {
+  paid: "bg-sugo text-[#fdf8ec]",
+  pending: "bg-muted text-muted-foreground",
+  failed: "bg-destructive text-white",
+};
+
 export function OrderQueue() {
   const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
@@ -29,8 +35,10 @@ export function OrderQueue() {
 
   useEffect(() => {
     load();
-    // The kitchen leaves this open on a screen, so keep it current.
-    const timer = setInterval(load, 30000);
+    // The kitchen leaves this open on a screen, so keep it current. Polling
+    // (not SSE/websockets) because the API runs as Vercel serverless
+    // functions, which don't hold a persistent connection open.
+    const timer = setInterval(load, 5000);
     return () => clearInterval(timer);
   }, [load]);
 
@@ -93,18 +101,56 @@ export function OrderQueue() {
                   {order.customer.name}
                   <span className="numeric ml-3 text-[13px] text-muted-foreground">
                     {order.customer.phone}
+                    {order.customer.phone2 ? ` / ${order.customer.phone2}` : ""}
                   </span>
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {order.type === "delivery" ? order.customer.address : "Pickup"}
-                </p>
+
+                {order.type === "delivery" ? (
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    <p>
+                      {order.customer.address}
+                      <span className="ml-2 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                        {order.customer.addressType}
+                      </span>
+                    </p>
+                    {(order.customer.entrance ||
+                      order.customer.floor ||
+                      order.customer.apartment) && (
+                      <p className="numeric">
+                        {[
+                          order.customer.entrance && `Entrance ${order.customer.entrance}`,
+                          order.customer.floor && `Floor ${order.customer.floor}`,
+                          order.customer.apartment && `Apt ${order.customer.apartment}`,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    )}
+                    {order.customer.addressNote && <p>{order.customer.addressNote}</p>}
+                  </div>
+                ) : (
+                  <p className="mt-1 text-sm text-muted-foreground">Pickup</p>
+                )}
+
                 {order.customer.note && (
                   <p className="mt-1 text-sm text-ember">“{order.customer.note}”</p>
                 )}
               </div>
-              <span className="numeric text-[11px] text-muted-foreground">
-                {new Date(order.createdAt).toLocaleString("en-GB")}
-              </span>
+              <div className="flex flex-col items-end gap-1.5">
+                <span className="numeric text-[11px] text-muted-foreground">
+                  {new Date(order.createdAt).toLocaleString("en-GB")}
+                </span>
+                {order.payment && (
+                  <span
+                    className={cn(
+                      "rounded-md px-2 py-0.5 font-mono text-[9.5px] tracking-[0.1em] uppercase",
+                      PAYMENT_TONE[order.payment.status] ?? PAYMENT_TONE.pending,
+                    )}
+                  >
+                    {order.payment.provider} · {order.payment.status}
+                  </span>
+                )}
+              </div>
             </div>
 
             <ul className="mt-3 border-y border-border py-2">

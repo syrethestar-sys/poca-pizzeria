@@ -2,6 +2,12 @@
 
 import { useLanguage } from "@/providers/language-provider";
 
+// Closes the page on the room itself. Cropped wide from the square original,
+// so Cloudinary does the crop rather than the browser throwing away pixels.
+// g_auto keeps the fire mouth in frame instead of slicing the dome in half.
+const OVEN_SRC =
+  "https://res.cloudinary.com/crbcsumf/image/upload/f_auto,q_auto,w_1400,c_fill,ar_21:9,g_auto/poca-hero-oven";
+
 export function VisitDetails() {
   const { lang, t } = useLanguage();
 
@@ -164,6 +170,13 @@ export function VisitDetails() {
           </figcaption>
         </figure>
       </div>
+
+      <img
+        src={OVEN_SRC}
+        alt={t("hero.ovenAlt")}
+        loading="lazy"
+        className="mb-10 aspect-[21/9] w-full border border-border object-cover"
+      />
     </>
   );
 }

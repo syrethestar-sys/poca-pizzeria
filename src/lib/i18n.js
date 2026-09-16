@@ -38,6 +38,10 @@ export const DICTIONARY = {
     en: "A dough that takes two days and an oven that takes ninety seconds.",
     mn: "Хоёр хоног исэх зуурмаг, ерэн секундэд шарах зуух.",
   },
+  "hero.ovenAlt": {
+    en: "The wood-fired oven with a fire burning inside it",
+    mn: "Дотроо гал асаж буй түлээний зуух",
+  },
 
   "facts.hours": { en: "Open", mn: "Цагийн хуваарь" },
   "facts.hoursValue": { en: "Mon–Sat · 11:00–23:00", mn: "Даваа–Бямба · 11:00–23:00" },
@@ -215,6 +219,10 @@ export const DICTIONARY = {
     mn: "Энэ хөтөч байршил илгээх боломжгүй.",
   },
   "location.confirm": { en: "Use this address", mn: "Энэ хаягийг сонгох" },
+  "location.tapHint": {
+    en: "Tap or drag the pin on the map to fine-tune the spot.",
+    mn: "Газрын зураг дээр товшиж эсвэл цэгийг чирж байршлаа тохируулна уу.",
+  },
   "location.back": { en: "Back", mn: "Буцах" },
   "location.credit": { en: "Addresses from OpenStreetMap", mn: "Хаягийн эх сурвалж: OpenStreetMap" },
   "menu.noPhoto": { en: "Photo coming", mn: "Зураг удахгүй" },

@@ -5,8 +5,11 @@ const BASE = "https://nominatim.openstreetmap.org";
 
 const shorten = (result) => {
   const a = result.address ?? {};
+  // Only a minority of Ulaanbaatar buildings carry addr:housenumber in OSM,
+  // but when one does it is the most useful part of the address — keep it.
+  const street = [a.road, a.house_number].filter(Boolean).join(" ");
   const parts = [
-    a.road,
+    street,
     a.neighbourhood ?? a.suburb ?? a.quarter,
     a.city ?? a.town ?? a.village ?? a.district,
   ].filter(Boolean);

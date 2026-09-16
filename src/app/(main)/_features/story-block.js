@@ -2,6 +2,28 @@
 
 import { useLanguage } from "@/providers/language-provider";
 
+// Served from Cloudinary at 1200px wide with f_auto,q_auto — the slots render
+// around 550px, so this covers retina without shipping the full-size original.
+const photo = (name) =>
+  `https://res.cloudinary.com/crbcsumf/image/upload/f_auto,q_auto,w_1200/poca-hero-${name}`;
+
+const PHOTOS = [
+  {
+    src: photo("oven-service"),
+    alt: {
+      en: "A pizza going into the wood-fired oven on a peel, embers glowing behind it",
+      mn: "Түлээний зуухан дотор улайсан нүүрсний өмнө хүрзэн дээр пиццаг хийж буй нь",
+    },
+  },
+  {
+    src: photo("dough-hands"),
+    alt: {
+      en: "Flour-dusted hands stretching a round of sourdough on a marble counter",
+      mn: "Гурилтай гар гантиг ширээн дээр исгэсэн зуурмагийг дэлгэж байгаа нь",
+    },
+  },
+];
+
 const PILLARS = [
   { title: { en: "Sourdough", mn: "Исгэсэн зуурмаг" }, body: { en: "A natural starter, slow fermentation, flour and water and salt. Nothing else in the dough.", mn: "Байгалийн хөрөнгө, удаан исгэлт, гурил, ус, давс. Зуурмагт өөр юу ч байхгүй." } },
   { title: { en: "Wood fire", mn: "Түлээний гал" }, body: { en: "The oven runs hot enough to bake a pizza in minutes, which keeps the base soft and the edge charred.", mn: "Зуух маань пиццаг хэдхэн минутанд шарах халуунтай — ёроол нь зөөлөн, ирмэг нь бага зэрэг шатсан гардаг." } },
@@ -26,16 +48,14 @@ export function StoryBlock() {
         </div>
 
         <div className="grid gap-3.5">
-          {["The oven at service", "Dough, hands, marble"].map((caption) => (
-            <div
-              key={caption}
-              className="grid aspect-video place-content-center gap-1.5 border border-dashed border-border bg-muted px-4 text-center"
-            >
-              <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-muted-foreground">
-                {lang === "mn" ? "Зургийн байр" : "Photo slot"}
-              </span>
-              <span className="text-[12.5px] text-muted-foreground/75">{caption} — 16:9</span>
-            </div>
+          {PHOTOS.map((photo) => (
+            <img
+              key={photo.src}
+              src={photo.src}
+              alt={lang === "mn" ? photo.alt.mn : photo.alt.en}
+              loading="lazy"
+              className="aspect-video w-full border border-border object-cover"
+            />
           ))}
         </div>
       </div>

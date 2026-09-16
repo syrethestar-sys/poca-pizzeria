@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { ExternalLink, MapPin, X } from "lucide-react";
 
 import { server } from "@/app/api/api";
+import { PinMap } from "@/components/pin-map";
 import { money } from "@/lib/format";
 import { useLanguage } from "@/providers/language-provider";
 import { cn } from "@/lib/utils";
@@ -15,11 +18,85 @@ const PAYMENT_TONE = {
   failed: "bg-destructive text-white",
 };
 
+const hasPin = (customer) =>
+  Number.isFinite(customer?.lat) && Number.isFinite(customer?.lon);
+
+// Ulaanbaatar street addresses are rarely precise enough to deliver on their
+// own, so the pin the customer dropped is the real instruction. Shown big,
+// with a hand-off link for whoever is actually driving.
+function OrderMapDialog({ order, onClose }) {
+  const { customer } = order;
+  const detail = [
+    customer.entrance && `Entrance ${customer.entrance}`,
+    customer.floor && `Floor ${customer.floor}`,
+    customer.apartment && `Apt ${customer.apartment}`,
+  ].filter(Boolean);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-60 flex items-center justify-center bg-carbone/60 p-4"
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <div
+        className="flex max-h-[92vh] w-[min(94vw,820px)] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+          <div className="min-w-0">
+            <p className="truncate font-display text-[18px]">{customer.name}</p>
+            <p className="numeric text-[12px] text-muted-foreground">{customer.phone}</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        <div className="h-[52vh] min-h-[280px] w-full bg-muted">
+          <PinMap lat={customer.lat} lon={customer.lon} zoom={17} />
+        </div>
+
+        <div className="flex flex-col gap-2 p-4">
+          <p className="text-sm">{customer.address}</p>
+          {detail.length > 0 && (
+            <p className="numeric text-sm text-muted-foreground">{detail.join(" · ")}</p>
+          )}
+          {customer.addressNote && (
+            <p className="text-sm text-muted-foreground">{customer.addressNote}</p>
+          )}
+          <div className="mt-1 flex items-center justify-between gap-3">
+            <span className="numeric text-[11px] text-muted-foreground">
+              {customer.lat.toFixed(5)}, {customer.lon.toFixed(5)}
+            </span>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${customer.lat},${customer.lon}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[12px] text-sugo underline-offset-4 hover:underline"
+            >
+              Open in Google Maps
+              <ExternalLink className="size-3.5" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 export function OrderQueue() {
   const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState(null);
   const [error, setError] = useState("");
+  const [mapOrder, setMapOrder] = useState(null);
 
   const load = useCallback(async () => {
     try {
@@ -127,6 +204,16 @@ export function OrderQueue() {
                       </p>
                     )}
                     {order.customer.addressNote && <p>{order.customer.addressNote}</p>}
+                    {hasPin(order.customer) && (
+                      <button
+                        type="button"
+                        onClick={() => setMapOrder(order)}
+                        className="mt-1 inline-flex items-center gap-1.5 text-[12px] text-sugo underline-offset-4 hover:underline"
+                      >
+                        <MapPin className="size-3.5" />
+                        See exact location
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <p className="mt-1 text-sm text-muted-foreground">Pickup</p>
@@ -188,6 +275,8 @@ export function OrderQueue() {
           </article>
         ))}
       </div>
+
+      {mapOrder && <OrderMapDialog order={mapOrder} onClose={() => setMapOrder(null)} />}
     </div>
   );
 }

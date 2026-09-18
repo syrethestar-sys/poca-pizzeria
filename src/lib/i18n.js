@@ -8,6 +8,8 @@ export const DICTIONARY = {
   "nav.story": { en: "Our craft", mn: "Бидний тухай" },
   "nav.visit": { en: "Visit", mn: "Байршил" },
   "nav.orders": { en: "My orders", mn: "Миний захиалга" },
+  "nav.admin": { en: "Admin", mn: "Админ" },
+  "nav.account": { en: "Account", mn: "Бүртгэл" },
 
   "brand.tagline": {
     en: "Hand made sourdough pizza",

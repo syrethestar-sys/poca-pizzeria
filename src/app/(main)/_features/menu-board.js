@@ -79,7 +79,7 @@ export function MenuBoard({ categories = [], items = [] }) {
       <span
         className={cn(
           "text-center text-[11px] leading-tight font-bold",
-          active ? "text-foreground" : "text-muted-foreground group-hover:text-foreground",
+          active ? "text-sugo" : "text-muted-foreground group-hover:text-foreground",
         )}
       >
         {label}

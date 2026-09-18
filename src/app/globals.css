@@ -102,9 +102,36 @@
   --ring: #f3722c;
 }
 
+/* Used with .dark on the public site, where the oven loop plays behind
+   everything. Only the surfaces the video should show through are relaxed:
+   cards sit at ~72% so the fire reads as a glow behind the menu rather than a
+   texture on top of it. --popover and --background are deliberately left
+   solid — a dropdown or a sticky header over moving flame is unreadable. */
+.ambient {
+  --card: rgb(27 23 21 / 0.72);
+  --muted: rgb(36 31 27 / 0.66);
+  --secondary: rgb(36 31 27 / 0.78);
+}
+
+/* <body> sits above .ambient in the tree, so it keeps the light theme's cream
+   fill. The fixed backdrop covers it in normal scrolling, but it flashes on
+   overscroll — the rubber-band at the top of the page on macOS and iOS. */
+body:has(.ambient) {
+  background-color: var(--carbone);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  /* Anchor navigation between the menu, craft and visit sections. */
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
   body {
     @apply bg-background text-foreground font-medium;

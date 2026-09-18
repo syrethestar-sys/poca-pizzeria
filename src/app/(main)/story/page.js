@@ -1,11 +1,7 @@
-import { StoryBlock } from "../_features/story-block";
+import { redirect } from "next/navigation";
 
-export const metadata = { title: "Our craft" };
-
+// Our craft is a section of the home page now. Kept as a route so older links,
+// bookmarks and anything already indexed still land in the right place.
 export default function StoryPage() {
-  return (
-    <div className="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
-      <StoryBlock />
-    </div>
-  );
+  redirect("/#story");
 }

@@ -44,8 +44,10 @@ export function MenuHero() {
         </div>
       </div>
 
-      {/* Copy leads, the arch answers it on the right. On a phone it drops below. */}
-      <WoodFire className="ml-auto w-full max-w-[300px] text-carbone md:max-w-[440px]" />
+      {/* Copy leads, the arch answers it on the right. On a phone it drops below.
+          The stones draw with currentColor — carbone reads as black holes now
+          that the oven video sits behind, so they run as pale stone instead. */}
+      <WoodFire className="ml-auto w-full max-w-[300px] text-semola/25 md:max-w-[440px]" />
     </section>
   );
 }

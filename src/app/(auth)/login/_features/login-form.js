@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,6 +18,15 @@ export function LoginForm() {
   const { login } = useAuth();
   const { t } = useLanguage();
   const [serverError, setServerError] = useState("");
+  const [notice, setNotice] = useState("");
+
+  // Read straight off the URL rather than through useSearchParams, which would
+  // force this page out of static rendering for the sake of one banner.
+  useEffect(() => {
+    const reason = new URLSearchParams(window.location.search).get("session");
+    if (reason === "rejected") setNotice(t("auth.sessionRejected"));
+    else if (reason === "expired") setNotice(t("auth.sessionExpired"));
+  }, [t]);
 
   const {
     register,
@@ -38,6 +47,12 @@ export function LoginForm() {
   return (
     <>
       <h1 className="text-[32px]">{t("auth.loginTitle")}</h1>
+
+      {notice && (
+        <p className="mt-4 rounded-md border border-ember/40 bg-ember/10 px-3 py-2.5 text-[13px] text-foreground">
+          {notice}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-7 flex flex-col gap-5">
         <div>

@@ -153,6 +153,14 @@ export const DICTIONARY = {
 
   "auth.loginTitle": { en: "Log in", mn: "Нэвтрэх" },
   "auth.signupTitle": { en: "Create an account", mn: "Бүртгэл үүсгэх" },
+  "auth.sessionRejected": {
+    en: "Your account details changed, so the session was ended. Please sign in again.",
+    mn: "Таны бүртгэлийн мэдээлэл өөрчлөгдсөн тул холболт дуусгавар болсон. Дахин нэвтэрнэ үү.",
+  },
+  "auth.sessionExpired": {
+    en: "Your session has expired. Please sign in again.",
+    mn: "Холболтын хугацаа дууссан байна. Дахин нэвтэрнэ үү.",
+  },
   "auth.email": { en: "Email", mn: "И-мэйл" },
   "auth.password": { en: "Password", mn: "Нууц үг" },
   "auth.confirm": { en: "Confirm password", mn: "Нууц үг давтах" },

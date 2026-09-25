@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { RedirectIfSignedIn } from "./_components/redirect-if-signed-in";
 
 export default function AuthLayout({ children }) {
   return (
     <div className="grid min-h-svh md:grid-cols-2">
+      <RedirectIfSignedIn />
+
       <div className="flex flex-col justify-center px-6 py-12 sm:px-12">
         <Link href="/" className="mb-10 inline-flex w-fit">
           <Logo square height={56} />

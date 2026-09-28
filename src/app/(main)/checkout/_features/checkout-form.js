@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MapPin, Phone } from "lucide-react";
 
 import { server } from "@/app/api/api";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,9 @@ import { FieldError } from "@/components/field-error";
 import { Input, Textarea } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { checkoutSchema } from "@/lib/validation/checkout";
+import { normalizeMnPhone } from "@/lib/phone";
+import { rememberGuestOrder } from "@/lib/my-orders";
+import { LocationPicker } from "../../_features/location-picker";
 import { money } from "@/lib/format";
 import { useAuth } from "@/providers/auth-provider";
 import { useCart } from "@/providers/cart-provider";
@@ -60,19 +62,25 @@ export function CheckoutForm() {
     },
   });
 
+  // The saved address loads from localStorage after the first render, and can
+  // change from the header or the picker below — keep the form in step.
+  useEffect(() => {
+    setValue("address", location?.full ?? "", { shouldValidate: Boolean(location) });
+  }, [location, setValue]);
+
   const type = watch("type");
   const addressType = watch("addressType");
 
   const onSubmit = async (values) => {
     setServerError("");
     try {
+      const phone = normalizeMnPhone(values.phone);
       const { data } = await server.post("/order/create", {
-        user: user?.id,
         type: values.type,
         customer: {
           name: values.name,
-          phone: values.phone,
-          phone2: values.phone2 ?? "",
+          phone,
+          phone2: values.phone2 ? normalizeMnPhone(values.phone2) : "",
           address: values.type === "delivery" ? values.address : "",
           addressType: values.addressType,
           entrance: values.entrance ?? "",
@@ -90,6 +98,9 @@ export function CheckoutForm() {
         })),
       });
       clear();
+      // Without an account, this browser remembers the order so the customer
+      // can follow it on /orders.
+      if (!user && data.order?._id) rememberGuestOrder(data.order._id, phone);
       if (data.order?.payment?.checkoutUrl) {
         window.location.href = data.order.payment.checkoutUrl;
         return;
@@ -167,10 +178,8 @@ export function CheckoutForm() {
             <div className="rounded-lg border border-border bg-card p-5">
               <div>
                 <BiLabel htmlFor="checkout-address" en="Delivery address" mn="Хүргэлтийн хаяг" />
-                <div className="relative mt-1.5">
-                  <MapPin className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-sugo" />
-                  <Input id="checkout-address" className="pl-9" {...register("address")} />
-                </div>
+                <LocationPicker variant="field" className="mt-1.5" />
+                <input type="hidden" id="checkout-address" {...register("address")} />
                 <FieldError error={errors.address} />
               </div>
 
@@ -263,11 +272,17 @@ export function CheckoutForm() {
               <div>
                 <BiLabel htmlFor="checkout-phone" en="Phone" mn="Утасны дугаар" />
                 <div className="relative mt-1.5">
-                  <Phone className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <span className="numeric pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-muted-foreground">
+                    +976
+                  </span>
                   <Input
                     id="checkout-phone"
-                    className="pl-9"
-                    inputMode="tel"
+                    className="numeric pl-14"
+                    type="tel"
+                    inputMode="numeric"
+                    autoComplete="tel-national"
+                    placeholder="9910 1234"
+                    maxLength={14}
                     {...register("phone")}
                   />
                 </div>
@@ -280,14 +295,21 @@ export function CheckoutForm() {
                   mn="Нэмэлт утасны дугаар"
                 />
                 <div className="relative mt-1.5">
-                  <Phone className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <span className="numeric pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-muted-foreground">
+                    +976
+                  </span>
                   <Input
                     id="checkout-phone2"
-                    className="pl-9"
-                    inputMode="tel"
+                    className="numeric pl-14"
+                    type="tel"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder="9910 1234"
+                    maxLength={14}
                     {...register("phone2")}
                   />
                 </div>
+                <FieldError error={errors.phone2} />
               </div>
             </div>
 

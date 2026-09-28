@@ -9,8 +9,12 @@ import { PinMap } from "@/components/pin-map";
 import { reverseGeocode, searchPlaces } from "@/lib/geocode";
 import { useLanguage } from "@/providers/language-provider";
 import { useLocation } from "@/providers/location-provider";
+import { cn } from "@/lib/utils";
 
-export function LocationPicker() {
+// One picker, two looks: a compact pill in the header and a full-width field
+// in checkout. Both edit the same saved address, so choosing it in one place
+// fills the other.
+export function LocationPicker({ variant = "header", className }) {
   const { location, setLocation } = useLocation();
   const { t } = useLanguage();
 
@@ -109,20 +113,52 @@ export function LocationPicker() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="flex h-9 w-[190px] shrink-0 items-center gap-1.5 rounded-md border border-border bg-card px-2.5 text-left hover:border-foreground"
-      >
-        <MapPin className="size-4 shrink-0 text-sugo" />
-        <span className="truncate text-[12px]">
-          {location ? (
-            location.label
-          ) : (
-            <span className="text-muted-foreground">{t("location.set")}</span>
+      {variant === "field" ? (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className={cn(
+            "flex w-full items-center gap-3 rounded-md border border-input bg-background px-3 py-2.5 text-left transition-colors duration-300 ease-in-out hover:border-foreground",
+            className,
           )}
-        </span>
-      </button>
+        >
+          <MapPin className="size-4 shrink-0 text-sugo" />
+          <span className="min-w-0 flex-1">
+            {location ? (
+              <>
+                <span className="block truncate text-sm font-medium">{location.label}</span>
+                <span className="block truncate text-[11px] text-muted-foreground">
+                  {location.full}
+                </span>
+              </>
+            ) : (
+              <span className="text-sm text-muted-foreground">{t("location.set")}</span>
+            )}
+          </span>
+          <span className="shrink-0 text-[11px] font-bold tracking-[0.12em] uppercase text-sugo">
+            {location ? t("checkout.changeAddress") : t("location.choose")}
+          </span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          title={location?.full}
+          className={cn(
+            "flex h-9 min-w-0 items-center gap-2 rounded-md border border-border bg-card px-3 text-left transition-colors duration-300 ease-in-out hover:border-foreground",
+            className,
+          )}
+        >
+          <MapPin className="size-4 shrink-0 text-sugo" />
+          <span className="truncate text-[12px]">
+            {location ? (
+              location.label
+            ) : (
+              <span className="text-muted-foreground">{t("location.set")}</span>
+            )}
+          </span>
+        </button>
+      )}
 
       {open &&
         createPortal(

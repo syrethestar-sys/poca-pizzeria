@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { WoodFire } from "@/components/wood-fire";
 import { useLanguage } from "@/providers/language-provider";
 
 // The menu is the landing page, so this masthead carries only what someone
@@ -12,7 +11,7 @@ export function MenuHero() {
   const { t } = useLanguage();
 
   return (
-    <section className="grid items-center gap-8 border-b border-border py-10 md:grid-cols-[1.05fr_0.95fr] md:py-12">
+    <section className="border-b border-border py-10 md:py-14">
       <div>
         <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-sugo">
           {t("hero.eyebrow")}
@@ -38,16 +37,11 @@ export function MenuHero() {
           <Button render={<a href="tel:+97677771088" />}>
             {t("action.call")} · 7777-1088
           </Button>
-          <Button variant="outline" render={<Link href="/visit" />}>
+          <Button variant="outline" render={<Link href="/#visit" />}>
             {t("nav.visit")}
           </Button>
         </div>
       </div>
-
-      {/* Copy leads, the arch answers it on the right. On a phone it drops below.
-          The stones draw with currentColor — carbone reads as black holes now
-          that the oven video sits behind, so they run as pale stone instead. */}
-      <WoodFire className="ml-auto w-full max-w-[300px] text-semola/25 md:max-w-[440px]" />
     </section>
   );
 }

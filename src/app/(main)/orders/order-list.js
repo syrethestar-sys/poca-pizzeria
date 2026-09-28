@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { server } from "@/app/api/api";
 import { Button } from "@/components/ui/button";
 import { money } from "@/lib/format";
+import { fetchMyOrders, orderNumber } from "@/lib/my-orders";
 import { useAuth } from "@/providers/auth-provider";
 import { useLanguage } from "@/providers/language-provider";
 
@@ -100,13 +101,8 @@ export function OrderList() {
 
   useEffect(() => {
     if (!ready) return;
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-    server
-      .get("/order/get", { params: { user: user.id } })
-      .then(({ data }) => setOrders(data.orders ?? []))
+    fetchMyOrders(user)
+      .then(setOrders)
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [ready, user]);
@@ -115,23 +111,22 @@ export function OrderList() {
 
   const returnBanner = returnedOrder ? <PaymentReturn orderId={returnedOrder} /> : null;
 
-  if (!user) {
-    return (
-      <>
-        {returnBanner}
-        <h1 className="text-[clamp(28px,4vw,40px)]">{t("orders.title")}</h1>
-        <p className="mt-4 text-muted-foreground">{t("auth.noAccount")}</p>
-        <Button className="mt-5" render={<Link href="/login" />}>
-          {t("action.login")}
-        </Button>
-      </>
-    );
-  }
+  // Guests see the orders placed from this browser; signing in keeps them
+  // on every device.
+  const guestHint = !user && (
+    <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-md border border-dashed border-border p-4">
+      <p className="text-sm text-muted-foreground">{t("orders.guestHint")}</p>
+      <Button size="sm" variant="outline" render={<Link href="/login" />}>
+        {t("action.login")}
+      </Button>
+    </div>
+  );
 
   return (
     <>
       {returnBanner}
       <h1 className="text-[clamp(28px,4vw,40px)]">{t("orders.title")}</h1>
+      {guestHint}
 
       {orders.length === 0 ? (
         <p className="mt-6 text-muted-foreground">{t("orders.empty")}</p>
@@ -140,8 +135,11 @@ export function OrderList() {
           {orders.map((order) => (
             <article key={order._id} className="border border-border bg-card p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="numeric text-[11px] text-muted-foreground">
-                  {new Date(order.createdAt).toLocaleString("en-GB")}
+                <span className="flex items-baseline gap-3">
+                  <span className="numeric text-[13px] font-bold">#{orderNumber(order._id)}</span>
+                  <span className="numeric text-[11px] text-muted-foreground">
+                    {new Date(order.createdAt).toLocaleString("en-GB")}
+                  </span>
                 </span>
                 <span className="flex items-center gap-3">
                   {order.payment?.status && (
@@ -180,6 +178,11 @@ export function OrderList() {
                 </span>
                 <span className="numeric font-medium">{money(order.total)}</span>
               </div>
+              {order.payment?.status === "pending" && order.payment?.checkoutUrl && (
+                <Button className="mt-4" size="sm" render={<a href={order.payment.checkoutUrl} />}>
+                  {t("payment.payNow")}
+                </Button>
+              )}
             </article>
           ))}
         </div>

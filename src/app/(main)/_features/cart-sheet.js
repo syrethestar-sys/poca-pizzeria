@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ShoppingCart, X } from "lucide-react";
 
-import { server } from "@/app/api/api";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { money } from "@/lib/format";
 import { useAuth } from "@/providers/auth-provider";
+import { fetchMyOrders, orderNumber } from "@/lib/my-orders";
 import { useCart } from "@/providers/cart-provider";
 import { useLanguage } from "@/providers/language-provider";
 import { cn } from "@/lib/utils";
@@ -46,11 +46,9 @@ export function CartSheet() {
   const [confirmEmpty, setConfirmEmpty] = useState(false);
 
   const loadOrders = useCallback(async () => {
-    if (!user) return;
     setLoadingOrders(true);
     try {
-      const { data } = await server.get("/order/get", { params: { user: user.id } });
-      setOrders(data.orders ?? []);
+      setOrders(await fetchMyOrders(user));
     } catch (err) {
       console.error(err);
     } finally {
@@ -219,15 +217,15 @@ export function CartSheet() {
           </>
         ) : (
           <div className="flex-1 overflow-y-auto px-6 pb-6">
-            {!user ? (
+            {loadingOrders ? (
+              <p className="py-10 text-sm text-muted-foreground">{t("orders.loading")}</p>
+            ) : !user && orders.length === 0 ? (
               <div className="py-10">
                 <p className="text-sm text-muted-foreground">{t("orders.signIn")}</p>
                 <Button className="mt-4" render={<Link href="/login" onClick={() => setOpen(false)} />}>
                   {t("action.login")}
                 </Button>
               </div>
-            ) : loadingOrders ? (
-              <p className="py-10 text-sm text-muted-foreground">{t("orders.loading")}</p>
             ) : orders.length === 0 ? (
               <p className="py-10 text-sm text-muted-foreground">{t("orders.empty")}</p>
             ) : (
@@ -235,8 +233,11 @@ export function CartSheet() {
                 {orders.map((order) => (
                   <article key={order._id} className="rounded-lg border border-border bg-card p-4">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="numeric text-[11px] text-muted-foreground">
-                        {new Date(order.createdAt).toLocaleString("en-GB")}
+                      <span className="flex items-baseline gap-2">
+                        <span className="numeric text-[12px] font-bold">#{orderNumber(order._id)}</span>
+                        <span className="numeric text-[11px] text-muted-foreground">
+                          {new Date(order.createdAt).toLocaleString("en-GB")}
+                        </span>
                       </span>
                       <span
                         className={cn(

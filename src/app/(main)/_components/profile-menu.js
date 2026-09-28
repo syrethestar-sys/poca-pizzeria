@@ -10,7 +10,7 @@ import { useLanguage } from "@/providers/language-provider";
 const itemClass =
   "flex w-full cursor-default items-center gap-2.5 px-3 py-2 text-[12px] text-foreground outline-none select-none data-highlighted:bg-muted data-disabled:opacity-50";
 
-export function ProfileMenu() {
+export function ProfileMenu({ className }) {
   const { user, logout } = useAuth();
   const { t } = useLanguage();
 
@@ -18,7 +18,7 @@ export function ProfileMenu() {
     <Menu.Root>
       <Menu.Trigger
         aria-label={t("nav.account")}
-        className="flex size-9 items-center justify-center rounded-full bg-sugo text-[#fdf8ec] outline-none hover:bg-[#8f1a17] focus-visible:ring-3 focus-visible:ring-ring/50 data-popup-open:bg-[#8f1a17]"
+        className={`${className} outline-none focus-visible:ring-3 focus-visible:ring-ring/50 data-popup-open:border-foreground`}
       >
         <User className="size-4" />
       </Menu.Trigger>

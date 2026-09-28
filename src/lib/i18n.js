@@ -123,6 +123,10 @@ export const DICTIONARY = {
 
   "orders.title": { en: "Your orders", mn: "Таны захиалга" },
   "orders.empty": { en: "No orders yet.", mn: "Захиалга алга." },
+  "orders.guestHint": {
+    en: "Orders placed on this device without an account show here. Log in to keep them on every device.",
+    mn: "Бүртгэлгүйгээр энэ төхөөрөмжөөс өгсөн захиалга энд харагдана. Бүх төхөөрөмж дээрээ харахын тулд нэвтэрнэ үү.",
+  },
   "payment.pending": { en: "Awaiting payment", mn: "Төлбөр хүлээгдэж байна" },
   "payment.paid": { en: "Paid", mn: "Төлөгдсөн" },
   "payment.failed": { en: "Payment failed", mn: "Төлбөр амжилтгүй" },
@@ -232,6 +236,7 @@ export const DICTIONARY = {
   "admin.addCategory": { en: "Add a category", mn: "Ангилал нэмэх" },
 
   "location.set": { en: "Set delivery address", mn: "Хүргэлтийн хаяг" },
+  "location.choose": { en: "Choose", mn: "Сонгох" },
   "location.title": { en: "Delivery address", mn: "Хүргэлтийн хаяг" },
   "location.placeholder": {
     en: "Street, district, landmark…",

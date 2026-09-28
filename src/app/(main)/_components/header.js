@@ -81,28 +81,17 @@ export function Header() {
         <div className="ml-auto flex min-w-0 items-center gap-2">
           <LocationPicker className="hidden w-[220px] sm:flex lg:w-[260px]" />
 
-          <div
-            className="flex h-9 shrink-0 overflow-hidden rounded-md border border-border bg-card p-0.5"
-            role="group"
-            aria-label="Language"
+          {/* One button: it shows the language you are reading in and flips
+              to the other on click. */}
+          <button
+            type="button"
+            onClick={() => setLang(lang === "en" ? "mn" : "en")}
+            aria-label={lang === "en" ? "Монгол хэл рүү шилжих" : "Switch to English"}
+            title={lang === "en" ? "Монгол" : "English"}
+            className="flex h-9 w-11 shrink-0 items-center justify-center rounded-md border border-border bg-card text-[11px] font-bold tracking-[0.08em] transition-colors duration-300 ease-in-out hover:border-foreground"
           >
-            {["en", "mn"].map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => setLang(code)}
-                aria-pressed={lang === code}
-                className={cn(
-                  "rounded-[5px] px-2.5 text-[11px] font-bold tracking-[0.08em] transition-colors duration-300 ease-in-out",
-                  lang === code
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {code === "en" ? "EN" : "МН"}
-              </button>
-            ))}
-          </div>
+            {lang === "en" ? "EN" : "МН"}
+          </button>
 
           <button
             type="button"

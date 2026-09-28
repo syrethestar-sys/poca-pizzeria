@@ -9,16 +9,14 @@ const photo = (name, ratio) =>
 
 const PHOTOS = [
   {
-    src: photo("oven-service", "4:3"),
-    caption: { en: "Into the wood fire", mn: "Түлээний гал руу" },
+    src: photo("oven-service", "3:2"),
     alt: {
       en: "A pizza going into the wood-fired oven on a peel, embers glowing behind it",
       mn: "Түлээний зуухан дотор улайсан нүүрсний өмнө хүрзэн дээр пиццаг хийж буй нь",
     },
   },
   {
-    src: photo("dough-hands", "4:5"),
-    caption: { en: "Stretched by hand", mn: "Гараар дэлгэнэ" },
+    src: photo("dough-hands", "3:2"),
     alt: {
       en: "Flour-dusted hands stretching a round of sourdough on a marble counter",
       mn: "Гурилтай гар гантиг ширээн дээр исгэсэн зуурмагийг дэлгэж байгаа нь",
@@ -32,68 +30,46 @@ const PILLARS = [
   { title: { en: "Honest ingredients", mn: "Шударга орц" }, body: { en: "Italian cheese and cured meats, Italian wine, and produce bought for the day rather than the week.", mn: "Италийн бяслаг, боловсруулсан мах, италь дарс, тухайн өдөртөө авсан ногоо." } },
 ];
 
-// An editorial spread: headline and lead side by side, two photos set at
-// different heights, the longer copy under them, then the three things the
-// place is built on as numbered cards.
+// Kept deliberately quiet: a centred introduction, two photos of equal
+// weight, one paragraph, and the three pillars as plain columns.
 export function StoryBlock() {
   const { lang, t } = useLanguage();
   const pick = (value) => (lang === "mn" ? value.mn : value.en);
 
   return (
-    <section className="py-14 md:py-20">
-      <div className="grid gap-6 md:grid-cols-12 md:items-end">
-        <div className="md:col-span-7">
-          <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-sugo">
-            {t("story.eyebrow")}
-          </p>
-          <h2 className="mt-3 text-[clamp(32px,5vw,56px)] leading-[1.02]">{t("story.title")}</h2>
-        </div>
-        <p className="text-[17px] leading-relaxed md:col-span-5 md:pb-2">{t("story.p1")}</p>
-      </div>
-
-      <div className="mt-10 grid gap-4 md:grid-cols-12">
-        {PHOTOS.map((photo, index) => (
-          <figure
-            key={photo.src}
-            className={index === 0 ? "md:col-span-7" : "md:col-span-5 md:mt-20"}
-          >
-            <img
-              src={photo.src}
-              alt={pick(photo.alt)}
-              loading="lazy"
-              className={`w-full rounded-lg border border-border object-cover ${
-                index === 0 ? "aspect-[4/3]" : "aspect-[4/5]"
-              }`}
-            />
-            <figcaption className="mt-2.5 flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] uppercase text-muted-foreground">
-              <span className="h-px w-6 bg-sugo" aria-hidden="true" />
-              {pick(photo.caption)}
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-
-      <div className="mt-10 grid gap-5 md:grid-cols-12">
-        <p className="leading-relaxed text-muted-foreground md:col-span-5 md:col-start-2">
-          {t("story.p2")}
+    <section className="py-16 md:py-24">
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="text-[11px] font-bold tracking-[0.22em] uppercase text-sugo">
+          {t("story.eyebrow")}
         </p>
-        <p className="leading-relaxed text-muted-foreground md:col-span-5">{t("story.p3")}</p>
+        <h2 className="mt-4 text-[clamp(30px,4.4vw,48px)] leading-[1.08]">{t("story.title")}</h2>
+        <p className="mt-5 text-[17px] leading-relaxed text-muted-foreground">{t("story.p1")}</p>
       </div>
 
-      <ol className="mt-14 grid gap-4 sm:grid-cols-3">
-        {PILLARS.map((pillar, index) => (
-          <li
-            key={pillar.title.en}
-            className="flex flex-col rounded-lg border border-border bg-card/85 p-6 backdrop-blur-sm transition-colors duration-300 ease-in-out hover:border-forno/60"
-          >
-            <span className="numeric text-[12px] font-bold tracking-[0.12em] text-forno">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 className="mt-8 text-[20px]">{pick(pillar.title)}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pick(pillar.body)}</p>
-          </li>
+      <div className="mt-12 grid gap-4 sm:grid-cols-2">
+        {PHOTOS.map((photo) => (
+          <img
+            key={photo.src}
+            src={photo.src}
+            alt={pick(photo.alt)}
+            loading="lazy"
+            className="aspect-[3/2] w-full rounded-lg object-cover"
+          />
         ))}
-      </ol>
+      </div>
+
+      <p className="mx-auto mt-12 max-w-2xl text-center leading-relaxed text-muted-foreground">
+        {t("story.p2")} {t("story.p3")}
+      </p>
+
+      <div className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8">
+        {PILLARS.map((pillar) => (
+          <div key={pillar.title.en} className="border-t border-border pt-5">
+            <h3 className="text-[17px]">{pick(pillar.title)}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pick(pillar.body)}</p>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

@@ -87,9 +87,7 @@ Vercel → **Add New → Project** → import `poca-pizzeria`.
 |---|---|
 | Framework preset | Next.js (detected) |
 | Root directory | `./` |
-| `NEXT_PUBLIC_API_URL` | `https://<your-api>.vercel.app` — no trailing slash |
-| `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | your cloud name |
-| `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` | your unsigned preset |
+| `NEXT_PUBLIC_API_URL` | `https://poca-pizzeria-server.onrender.com` — no trailing slash |
 
 `NEXT_PUBLIC_*` values are **baked in at build time**. If you change one later you
 must redeploy — editing it in the dashboard alone changes nothing.

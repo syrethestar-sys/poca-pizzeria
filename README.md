@@ -62,7 +62,7 @@ Prata is a **stand-in** for the wordmark's real typeface — swap it in
   marked placeholders. Replace them with the real photo library.
 - `Logo.js` sets the wordmark in type. Swap it for the vector wordmark when the
   SVG exists.
-- Admin routes are guarded in the browser only — the API has no auth on its write
-  routes yet. Do not deploy the admin publicly until that is fixed.
-- Cloudinary upload needs `NEXT_PUBLIC_CLOUDINARY_*` set, same as the reference
-  project.
+- Admin pages verify the session with the API (`/auth/me`), and the API's write
+  routes require an admin token.
+- Admin image uploads are signed by the API (`POST /upload/sign`); Cloudinary
+  keys live only in the server's environment.

@@ -197,6 +197,7 @@ export const DICTIONARY = {
     mn: "Талбайн чанх ард, Флорагаас баруун тийш 20 метр.",
   },
   "visit.address": { en: "Address", mn: "Хаяг" },
+  "visit.directions": { en: "Get directions", mn: "Зам заалгах" },
   "visit.addressValue": {
     en: "Directly behind the Square, 20 m west of the Flora flower shop",
     mn: "Талбайн чанх ард, Флора цэцгийн дэлгүүрээс баруун тийш 20 метр",

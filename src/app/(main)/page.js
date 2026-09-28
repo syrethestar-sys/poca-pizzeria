@@ -25,7 +25,7 @@ export default async function HomePage() {
         <StoryBlock />
       </section>
 
-      <section id="visit" className="scroll-mt-20 border-t border-border pt-12">
+      <section id="visit" className="scroll-mt-20 border-t border-border pt-16 md:pt-24">
         <VisitDetails />
       </section>
     </div>

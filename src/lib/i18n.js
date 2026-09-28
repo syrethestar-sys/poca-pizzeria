@@ -123,6 +123,26 @@ export const DICTIONARY = {
 
   "orders.title": { en: "Your orders", mn: "Таны захиалга" },
   "orders.empty": { en: "No orders yet.", mn: "Захиалга алга." },
+  "payment.pending": { en: "Awaiting payment", mn: "Төлбөр хүлээгдэж байна" },
+  "payment.paid": { en: "Paid", mn: "Төлөгдсөн" },
+  "payment.failed": { en: "Payment failed", mn: "Төлбөр амжилтгүй" },
+  "payment.returnPaid": {
+    en: "Payment received — the kitchen has your order.",
+    mn: "Төлбөр орлоо — захиалга гал тогоонд очлоо.",
+  },
+  "payment.returnPending": {
+    en: "Waiting for the payment to be confirmed…",
+    mn: "Төлбөр баталгаажихыг хүлээж байна…",
+  },
+  "payment.returnFailed": {
+    en: "The payment did not go through. Nothing was charged.",
+    mn: "Төлбөр амжилтгүй боллоо. Мөнгө хасагдаагүй.",
+  },
+  "payment.payNow": { en: "Pay now", mn: "Одоо төлөх" },
+  "payment.lookupFailed": {
+    en: "Could not check the payment. Refresh in a moment.",
+    mn: "Төлбөрийг шалгаж чадсангүй. Түр хүлээгээд дахин ачаална уу.",
+  },
 
   "status.pending": { en: "Received", mn: "Хүлээн авсан" },
   "status.preparing": { en: "In the oven", mn: "Зууханд" },

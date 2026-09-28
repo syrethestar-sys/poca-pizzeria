@@ -9,6 +9,74 @@ import { money } from "@/lib/format";
 import { useAuth } from "@/providers/auth-provider";
 import { useLanguage } from "@/providers/language-provider";
 
+const PAYMENT_TONE = {
+  pending: "text-muted-foreground",
+  paid: "text-forno",
+  failed: "text-sugo",
+};
+
+// Wire's hosted checkout sends the customer back to /orders?order=<id>.
+// Works without an account, so guests see their payment result too.
+function PaymentReturn({ orderId }) {
+  const { t } = useLanguage();
+  const [state, setState] = useState(null);
+
+  useEffect(() => {
+    let stopped = false;
+    let timer;
+    let tries = 0;
+    const check = async () => {
+      try {
+        const { data } = await server.get("/order/payment", { params: { id: orderId } });
+        if (stopped) return;
+        setState(data.order);
+        // Webhooks can lag a few seconds behind the redirect.
+        if (data.order?.paymentStatus === "pending" && ++tries < 10) {
+          timer = setTimeout(check, 3000);
+        }
+      } catch {
+        if (!stopped) setState({ error: true });
+      }
+    };
+    check();
+    return () => {
+      stopped = true;
+      clearTimeout(timer);
+    };
+  }, [orderId]);
+
+  if (!state) return null;
+
+  const tone = state.error
+    ? "border-border"
+    : state.paymentStatus === "paid"
+      ? "border-forno"
+      : state.paymentStatus === "failed"
+        ? "border-sugo"
+        : "border-border";
+  const message = state.error
+    ? t("payment.lookupFailed")
+    : t(
+        state.paymentStatus === "paid"
+          ? "payment.returnPaid"
+          : state.paymentStatus === "failed"
+            ? "payment.returnFailed"
+            : "payment.returnPending",
+      );
+
+  return (
+    <div className={`mb-8 flex flex-wrap items-center justify-between gap-4 border bg-card p-5 ${tone}`}>
+      <div>
+        <p className="text-sm">{message}</p>
+        {state.total != null && <p className="numeric mt-1 text-[20px] font-medium">{money(state.total)}</p>}
+      </div>
+      {state.paymentStatus === "pending" && state.checkoutUrl && (
+        <Button render={<a href={state.checkoutUrl} />}>{t("payment.payNow")}</Button>
+      )}
+    </div>
+  );
+}
+
 const STATUS_TONE = {
   pending: "bg-muted text-muted-foreground",
   preparing: "bg-forno text-[#7d1a0f]",
@@ -23,6 +91,12 @@ export function OrderList() {
   const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [returnedOrder, setReturnedOrder] = useState(null);
+
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("order");
+    if (id) setReturnedOrder(id);
+  }, []);
 
   useEffect(() => {
     if (!ready) return;
@@ -39,9 +113,12 @@ export function OrderList() {
 
   if (!ready || loading) return null;
 
+  const returnBanner = returnedOrder ? <PaymentReturn orderId={returnedOrder} /> : null;
+
   if (!user) {
     return (
       <>
+        {returnBanner}
         <h1 className="text-[clamp(28px,4vw,40px)]">{t("orders.title")}</h1>
         <p className="mt-4 text-muted-foreground">{t("auth.noAccount")}</p>
         <Button className="mt-5" render={<Link href="/login" />}>
@@ -53,6 +130,7 @@ export function OrderList() {
 
   return (
     <>
+      {returnBanner}
       <h1 className="text-[clamp(28px,4vw,40px)]">{t("orders.title")}</h1>
 
       {orders.length === 0 ? (
@@ -65,12 +143,23 @@ export function OrderList() {
                 <span className="numeric text-[11px] text-muted-foreground">
                   {new Date(order.createdAt).toLocaleString("en-GB")}
                 </span>
-                <span
-                  className={`rounded-md px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] uppercase ${
-                    STATUS_TONE[order.status] ?? STATUS_TONE.pending
-                  }`}
-                >
-                  {t(`status.${order.status}`)}
+                <span className="flex items-center gap-3">
+                  {order.payment?.status && (
+                    <span
+                      className={`font-mono text-[10px] tracking-[0.12em] uppercase ${
+                        PAYMENT_TONE[order.payment.status] ?? PAYMENT_TONE.pending
+                      }`}
+                    >
+                      {t(`payment.${order.payment.status}`)}
+                    </span>
+                  )}
+                  <span
+                    className={`rounded-md px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] uppercase ${
+                      STATUS_TONE[order.status] ?? STATUS_TONE.pending
+                    }`}
+                  >
+                    {t(`status.${order.status}`)}
+                  </span>
                 </span>
               </div>
               <ul className="mt-3">

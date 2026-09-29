@@ -222,7 +222,7 @@ export function CartSheet() {
             ) : !user && orders.length === 0 ? (
               <div className="py-10">
                 <p className="text-sm text-muted-foreground">{t("orders.signIn")}</p>
-                <Button className="mt-4" render={<Link href="/login" onClick={() => setOpen(false)} />}>
+                <Button className="mt-4" render={<Link href="/sign-in" onClick={() => setOpen(false)} />}>
                   {t("action.login")}
                 </Button>
               </div>

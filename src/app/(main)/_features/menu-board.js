@@ -86,7 +86,6 @@ export function MenuBoard({ categories = [], items = [] }) {
       </span>
     </button>
   );
-
   return (
     <>
       {/* Food / Drinks on the left, legend hard right, one rule under both. */}

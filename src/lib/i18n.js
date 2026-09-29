@@ -13,13 +13,13 @@ export const DICTIONARY = {
 
   "brand.tagline": {
     en: "Hand made sourdough pizza",
-    mn: "Гар аргаар хийсэн исгэсэн зуурмагтай пицца",
+    mn: "Гар аргаар хийсэн исгэсэн гурилтай пицца",
   },
 
   "action.login": { en: "Log in", mn: "Нэвтрэх" },
   "action.signup": { en: "Sign up", mn: "Бүртгүүлэх" },
   "action.logout": { en: "Log out", mn: "Гарах" },
-  "action.sendResetLink": { en: "Send reset link", mn: "Холбоос илгээх" },
+  "action.sendResetLink": { en: "Send reset link", mn: "Нууц үг шинэчлэх линк илгээх" },
   "action.resetPassword": { en: "Update password", mn: "Нууц үг шинэчлэх" },
   "action.call": { en: "Call", mn: "Залгах" },
   "action.seeMenu": { en: "See the menu", mn: "Цэс үзэх" },
@@ -29,12 +29,12 @@ export const DICTIONARY = {
   "action.close": { en: "Close", mn: "Хаах" },
   "action.back": { en: "Back to the menu", mn: "Цэс рүү буцах" },
 
-  "hero.eyebrow": { en: "Wood-fired · Ulaanbaatar", mn: "Түлээний галд · Улаанбаатар" },
-  "hero.titleA": { en: "Wood-fired", mn: "Түлээний галд" },
-  "hero.titleB": { en: "sourdough pizza.", mn: "исгэсэн зуурмагтай пицца." },
+  "hero.eyebrow": { en: "Wood-fired · Ulaanbaatar", mn: "Ил галд · Улаанбаатар" },
+  "hero.titleA": { en: "Wood-fired", mn: "Ил галд" },
+  "hero.titleB": { en: "sourdough pizza.", mn: "исгэсэн гурилтай пицца." },
   "hero.sub": {
     en: "A dough that takes two days and an oven that takes ninety seconds. Handmade, honest ingredients, nine pizzas.",
-    mn: "Хоёр хоног исэх зуурмаг, ерэн секундэд шарах зуух. Гараар хийсэн, шударга орц, есөн пицца.",
+    mn: "Хоёр хоног исэх зуурмаг, ерэн секундэд шарах зуух. Гараар хийсэн, эрүүл орц, есөн пицца.",
   },
   "hero.subShort": {
     en: "A dough that takes two days and an oven that takes ninety seconds.",
@@ -48,17 +48,16 @@ export const DICTIONARY = {
   "facts.hours": { en: "Open", mn: "Цагийн хуваарь" },
   "facts.hoursValue": { en: "Mon–Sat · 11:00–23:00", mn: "Даваа–Бямба · 11:00–23:00" },
   "facts.find": { en: "Find us", mn: "Хаяг" },
-  "facts.findValue": { en: "Behind the Square", mn: "Талбайн чанх ард" },
+  "facts.findValue": { en: "Behind the Sukhbaatar Square", mn: "Сүхбаатарын талбайн чанх ард" },
   "facts.delivery": { en: "Delivery", mn: "Хүргэлт" },
-  "facts.deliveryValue": { en: "Toki", mn: "Toki" },
   "facts.oven": { en: "Oven", mn: "Зуух" },
-  "facts.ovenValue": { en: "Wood-fired", mn: "Түлээний гал" },
+  "facts.ovenValue": { en: "Wood-fired", mn: "Ил галд" },
 
   "menu.title": { en: "The menu", mn: "Цэс" },
   "menu.eyebrow": { en: "Food & drink", mn: "Хоол, ундаа" },
   "menu.lede": {
     en: "Everything is made to order. Prices in tögrög; the kitchen closes with the room at 23:00.",
-    mn: "Бүх хоолыг захиалгаар бэлддэг. Үнэ төгрөгөөр. Гал тогоо 23:00 цагт хаагдана.",
+    mn: "Бүх хоолыг захиалгаар бэлддэг. Гал тогоо 23:00 цагт хаагдана.",
   },
   "menu.food": { en: "Food", mn: "Хоол" },
   "menu.drinks": { en: "Drinks", mn: "Ундаа" },
@@ -117,8 +116,8 @@ export const DICTIONARY = {
   "checkout.summary": { en: "Order summary", mn: "Захиалгын тойм" },
   "checkout.placed": { en: "Order placed", mn: "Захиалга хүлээн авлаа" },
   "checkout.placedBody": {
-    en: "We will call to confirm. Delivery runs through Toki.",
-    mn: "Бид баталгаажуулахаар залгана. Хүргэлт Toki-гоор явна.",
+    en: "We will call to confirm.",
+    mn: "Бид баталгаажуулахаар залгана.",
   },
 
   "orders.title": { en: "Your orders", mn: "Таны захиалга" },
@@ -174,7 +173,7 @@ export const DICTIONARY = {
   "auth.forgotPasswordTitle": { en: "Reset your password", mn: "Нууц үг сэргээх" },
   "auth.forgotPasswordLede": {
     en: "Enter your email and we'll send you a reset link.",
-    mn: "И-мэйл хаягаа оруулбал сэргээх холбоос илгээнэ.",
+    mn: "И-мэйл хаягаа оруулбал сэргээх линк илгээнэ.",
   },
   "auth.resetEmailSent": {
     en: "If that email is registered, a reset link is on its way.",
@@ -189,17 +188,17 @@ export const DICTIONARY = {
   },
   "auth.invalidResetLink": {
     en: "This reset link is invalid or missing. Request a new one.",
-    mn: "Энэ холбоос хүчингүй байна. Дахин хүсэлт илгээнэ үү.",
+    mn: "Энэ линк хүчингүй байна. Дахин хүсэлт илгээнэ үү.",
   },
 
   "visit.title": {
-    en: "Behind the Square, 20 metres west of Flora.",
-    mn: "Талбайн чанх ард, Флорагаас баруун тийш 20 метр.",
+    en: "Behind the Sukhbaatar Square, 20 metres west of Flora.",
+    mn: "Талбайн чанх ард, Флорагаас цэцгийн дэлгүүрээс баруун тийш 20 метр.",
   },
   "visit.address": { en: "Address", mn: "Хаяг" },
   "visit.directions": { en: "Get directions", mn: "Зам заалгах" },
   "visit.addressValue": {
-    en: "Directly behind the Square, 20 m west of the Flora flower shop",
+    en: "Directly behind the Sukhbaatar Square, 20 m west of the Flora flower shop",
     mn: "Талбайн чанх ард, Флора цэцгийн дэлгүүрээс баруун тийш 20 метр",
   },
   "visit.phone": { en: "Phone", mn: "Утас" },
@@ -209,22 +208,22 @@ export const DICTIONARY = {
   "visit.closed": { en: "Closed", mn: "Амарна" },
   "visit.service": { en: "Service", mn: "Үйлчилгээ" },
   "visit.serviceValue": {
-    en: "Dine-in · Takeaway · Delivery with Toki",
-    mn: "Ресторандаа · Авч явах · Toki хүргэлт",
+    en: "Dine-in · Takeaway ",
+    mn: "Ресторандаа · Авч явах ",
   },
 
   "story.eyebrow": { en: "Our craft", mn: "Бидний ажил" },
   "story.title": {
     en: "One oven, one dough, no shortcuts.",
-    mn: "Нэг зуух, нэг зуурмаг, товчлол үгүй.",
+    mn: "Нэг зуух, нэг зуурмаг, бүгдийг жинхэнээр нь.",
   },
   "story.p1": {
-    en: "Poca is a small pizzeria behind the Square, built around a wood-fired oven and a sourdough starter.",
-    mn: "Poca бол талбайн ард байрлах жижиг пиццерия — түлээний зуух, исгэсэн зуурмаг хоёр дээр босгосон газар.",
+    en: "Poca is a small pizzeria behind the Sukhbaatar square, built around a wood-fired oven and a sourdough starter.",
+    mn: "Poca бол талбайн ард байрлах жижиг пиццерия — ил галын зуух, исгэсэн гурил хоёр дээр босгосон газар.",
   },
   "story.p2": {
     en: "The dough is made by hand and left to ferment naturally. It bakes on the fire, which is why the crust comes out blistered and light rather than uniform.",
-    mn: "Зуурмагийг гараар зуурч, байгалийн аргаар исгэнэ. Шууд галын дэргэд шарагддаг тул ирмэг нь жигд биш, хөнгөн хөөсөрсөн байдалтай гардаг.",
+    mn: "Зуурмагийг гараар зуурч, байгалийн аргаар исгэдэг. Шууд галын дэргэд шарагддаг тул ирмэг нь жигд биш, хөнгөн хөөсөрсөн байдалтай гардаг.",
   },
   "story.p3": {
     en: "The topping list is short on purpose. What is on the pizza is what you taste.",

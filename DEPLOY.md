@@ -88,9 +88,17 @@ Vercel → **Add New → Project** → import `poca-pizzeria`.
 | Framework preset | Next.js (detected) |
 | Root directory | `./` |
 | `NEXT_PUBLIC_API_URL` | `https://poca-pizzeria-server.onrender.com` — no trailing slash |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | `pk_test_…` from `.env.local` |
+| `CLERK_SECRET_KEY` | `sk_test_…` from `.env.local` — used by the proxy, never sent to the browser |
 
 `NEXT_PUBLIC_*` values are **baked in at build time**. If you change one later you
-must redeploy — editing it in the dashboard alone changes nothing.
+must redeploy — editing it in the dashboard alone changes nothing. That applies to
+the Clerk publishable key too: swapping Clerk apps means a rebuild, not just an
+env edit.
+
+Set the API's `FRONTEND_URL` to this site's URL as well. The API's CORS allowlist
+is built from it, so leaving it unset means the browser blocks every request from
+the deployed site while localhost carries on working.
 
 ---
 

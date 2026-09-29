@@ -116,7 +116,7 @@ export function OrderList() {
   const guestHint = !user && (
     <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-md border border-dashed border-border p-4">
       <p className="text-sm text-muted-foreground">{t("orders.guestHint")}</p>
-      <Button size="sm" variant="outline" render={<Link href="/login" />}>
+      <Button size="sm" variant="outline" render={<Link href="/sign-in" />}>
         {t("action.login")}
       </Button>
     </div>

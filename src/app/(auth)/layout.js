@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
-import { RedirectIfSignedIn } from "./_components/redirect-if-signed-in";
 
+// Clerk turns someone who is already signed in away from these routes itself,
+// so the redirect guard that used to sit here is gone rather than reimplemented.
 export default function AuthLayout({ children }) {
   return (
     <div className="grid min-h-svh md:grid-cols-2">
-      <RedirectIfSignedIn />
-
       <div className="flex flex-col justify-center px-6 py-12 sm:px-12">
         <Link href="/" className="mb-10 inline-flex w-fit">
           <Logo square height={56} />

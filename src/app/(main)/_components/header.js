@@ -111,7 +111,7 @@ export function Header() {
             <ProfileMenu className={iconButton} />
           ) : (
             <Link
-              href="/login"
+              href="/sign-in"
               className="flex h-9 shrink-0 items-center rounded-md bg-sugo px-3.5 text-[12px] font-bold text-[#fdf8ec] transition-colors duration-300 ease-in-out hover:bg-[#8f1a17]"
             >
               {t("action.login")}

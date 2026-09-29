@@ -7,9 +7,14 @@ export const server = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-server.interceptors.request.use((config) => {
+// Clerk mints a short-lived token per request instead of handing out one
+// long-lived credential to keep. Reading it off window.Clerk rather than
+// through the hook keeps this a plain module that any caller can import,
+// including the ones outside React — and there is no ordering hazard, since a
+// request made before Clerk has loaded has no session to send anyway.
+server.interceptors.request.use(async (config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
+    const token = await window.Clerk?.session?.getToken();
     if (token) config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

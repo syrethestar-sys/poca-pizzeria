@@ -1,3 +1,5 @@
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadcn } from "@clerk/ui/themes";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -26,11 +28,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <LanguageProvider>
-          <LocationProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </LocationProvider>
-        </LanguageProvider>
+        <ClerkProvider appearance={{ theme: shadcn }}>
+          <LanguageProvider>
+            <LocationProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </LocationProvider>
+          </LanguageProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
